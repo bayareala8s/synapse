@@ -1,0 +1,17 @@
+{
+	"name": "SwitchingPartitions",
+	"properties": {
+		"content": {
+			"query": "-- Lab - Switching partitions\n\n-- Create a new table with partitions\n-- Switch partitions\n-- This can be done with the Alter command. \n-- But the alter command will not work if the table has a clustered column store index\n-- When using the CREATE TABLE AS , we need to mention a distribution type\n\n\nCREATE TABLE [logdata_new_partition]\nWITH\n(\nDISTRIBUTION = ROUND_ROBIN,\nPARTITION ( [Time] RANGE RIGHT FOR VALUES\n            ('2021-05-01','2021-06-01')\n\n   ) ) \nAS\nSELECT * \nFROM logdatapartition\nWHERE 1=2\n\n-- Switch the partitions and then see the data\n\nALTER TABLE [logdatapartition] SWITCH PARTITION 2 TO [logdata_new_partition] PARTITION 1;\n\nSELECT count(*) FROM [logdata_new_partition]\nSELECT FORMAT(Time,'yyyy-MM-dd') AS dt,COUNT(*) FROM logdata_new_partition\nGROUP BY FORMAT(Time,'yyyy-MM-dd')\n\n-- See the data in the original table\n\nSELECT FORMAT(Time,'yyyy-MM-dd') AS dt,COUNT(*) FROM logdata_new_partition\nGROUP BY FORMAT(Time,'yyyy-MM-dd')\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

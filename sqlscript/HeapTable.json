@@ -1,0 +1,17 @@
+{
+	"name": "HeapTable",
+	"properties": {
+		"content": {
+			"query": "-- Creating a heap table\n\nCREATE TABLE [SalesFact_staging](\n\t[ProductID] [int] NOT NULL,\n\t[SalesOrderID] [int] NOT NULL,\n\t[CustomerID] [int] NOT NULL,\n\t[OrderQty] [smallint] NOT NULL,\n\t[UnitPrice] [money] NOT NULL,\n\t[OrderDate] [datetime] NULL,\n\t[TaxAmt] [money] NULL\n)\nWITH(HEAP,\nDISTRIBUTION = ROUND_ROBIN\n)\n\nCREATE INDEX ProductIDIndex ON [SalesFact_staging] (ProductID)\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

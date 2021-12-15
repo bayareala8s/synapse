@@ -1,0 +1,17 @@
+{
+	"name": "LoadJSONData",
+	"properties": {
+		"content": {
+			"query": "-- Lab - Reading JSON files\n\n-- Here we are using the OPENROWSET Function\n\nSELECT TOP 100\n    jsonContent\nFROM\n    OPENROWSET(\n        BULK 'https://bayareala8s.dfs.core.windows.net/bayareala8s/raw/log.json',\n        FORMAT = 'CSV',\n        FIELDQUOTE = '0x0b',\n        FIELDTERMINATOR ='0x0b',\n        ROWTERMINATOR = '0x0a'\n    )\n    WITH (\n        jsonContent varchar(MAX)\n    ) AS [rows]\n\n\n-- The above statement only returns all as a single string line by line\n-- Next we can cast to seperate columns\n\n\n\nSELECT \n   CAST(JSON_VALUE(jsonContent,'$.Id') AS INT) AS Id,\n   JSON_VALUE(jsonContent,'$.Correlationid') As Correlationid,\n   JSON_VALUE(jsonContent,'$.Operationname') AS Operationname,\n   JSON_VALUE(jsonContent,'$.Status') AS Status,\n   JSON_VALUE(jsonContent,'$.Eventcategory') AS Eventcategory,\n   JSON_VALUE(jsonContent,'$.Level') AS Level,\n   CAST(JSON_VALUE(jsonContent,'$.Time') AS datetimeoffset) AS Time,\n   JSON_VALUE(jsonContent,'$.Subscription') AS Subscription,\n   JSON_VALUE(jsonContent,'$.Eventinitiatedby') AS Eventinitiatedby,\n   JSON_VALUE(jsonContent,'$.Resourcetype') AS Resourcetype,\n   JSON_VALUE(jsonContent,'$.Resourcegroup') AS Resourcegroup\nFROM\n    OPENROWSET(\n        BULK 'https://bayareala8s.dfs.core.windows.net/bayareala8s/raw/log.json',\n        FORMAT = 'CSV',\n        FIELDQUOTE = '0x0b',\n        FIELDTERMINATOR ='0x0b',\n        ROWTERMINATOR = '0x0a'\n    )\n    WITH (\n        jsonContent varchar(MAX)\n    ) AS [rows]\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

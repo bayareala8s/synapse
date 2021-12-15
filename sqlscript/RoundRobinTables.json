@@ -1,0 +1,17 @@
+{
+	"name": "RoundRobinTables",
+	"properties": {
+		"content": {
+			"query": "-- Lab - Creating Round-robin Tables\n\n-- First let's ensure we have the tables defined in the SQL pool\n-- We will use Azure Data Factory to transfer the tables\n\nCREATE TABLE [dbo].[SalesFactRoundRobin](\n\t[ProductID] [int] NOT NULL,\n\t[SalesOrderID] [int] NOT NULL,\n\t[CustomerID] [int] NOT NULL,\n\t[OrderQty] [smallint] NOT NULL,\n\t[UnitPrice] [money] NOT NULL,\n\t[OrderDate] [datetime] NULL,\n\t[TaxAmt] [money] NULL\n)\n\n\n-- To see the distribution on the table\nDBCC PDW_SHOWSPACEUSED('[dbo].[SalesFactRoundRobin]')\n\n-- If you execute the below query\nSELECT [CustomerID], COUNT([CustomerID]) as COUNT FROM [dbo].[SalesFactRoundRobin]\nGROUP BY [CustomerID]\nORDER BY [CustomerID]\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

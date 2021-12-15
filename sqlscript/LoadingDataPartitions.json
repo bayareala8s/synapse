@@ -1,0 +1,17 @@
+{
+	"name": "LoadingDataPartitions",
+	"properties": {
+		"content": {
+			"query": "-- Lab - Creating a table with partitions\n\nDROP TABLE [logdata]\n\nCREATE TABLE [logdata]\n(\n    [Id] [int] NULL,\n\t[Correlationid] [varchar](200) NULL,\n\t[Operationname] [varchar](200) NULL,\n\t[Status] [varchar](100) NULL,\n\t[Eventcategory] [varchar](100) NULL,\n\t[Level] [varchar](100) NULL,\n\t[Time] [datetime] NULL,\n\t[Subscription] [varchar](200) NULL,\n\t[Eventinitiatedby] [varchar](1000) NULL,\n\t[Resourcetype] [varchar](1000) NULL,\n\t[Resourcegroup] [varchar](1000) NULL\n)\n\nCOPY INTO logdata FROM 'https://datalake2000.blob.core.windows.net/data/cleaned/Log.csv'\nWITH\n(\nFIRSTROW=2\n)\n\n-- Let's first inspect our table to see the range of dates\n\nSELECT FORMAT(Time,'yyyy-MM-dd') AS dt,COUNT(*) FROM logdata\nGROUP BY FORMAT(Time,'yyyy-MM-dd')\n\n-- Let's drop the existing table if its exists\nDROP TABLE logdata\n\n\n-- Let's create a new table with partitions\nCREATE TABLE [logdatapartition]\n(\n    [Id] [int] NULL,\n\t[Correlationid] [varchar](200) NULL,\n\t[Operationname] [varchar](200) NULL,\n\t[Status] [varchar](100) NULL,\n\t[Eventcategory] [varchar](100) NULL,\n\t[Level] [varchar](100) NULL,\n\t[Time] [datetime] NULL,\n\t[Subscription] [varchar](200) NULL,\n\t[Eventinitiatedby] [varchar](1000) NULL,\n\t[Resourcetype] [varchar](1000) NULL,\n\t[Resourcegroup] [varchar](1000) NULL\n)\nWITH\n(\nPARTITION ( [Time] RANGE RIGHT FOR VALUES\n            ('2021-04-01','2021-05-01','2021-06-01')\n\n   )  \n)\n\n-- Copy data into the table\nCOPY INTO logdatapartition FROM 'https://bayareala8s.blob.core.windows.net/bayareala8s/cleaned/Log.csv'\nWITH\n(\nFIRSTROW=2\n)\n\nSELECT * FROM [logdatapartition]\n\n-- View the partitions\nSELECT  QUOTENAME(s.[name])+'.'+QUOTENAME(t.[name]) as Table_name\n,       i.[name] as Index_name\n,       p.partition_number as Partition_nmbr\n,       p.[rows] as Row_count\n,       p.[data_compression_desc] as Data_Compression_desc\nFROM    sys.partitions p\nJOIN    sys.tables     t    ON    p.[object_id]   = t.[object_id]\nJOIN    sys.schemas    s    ON    t.[schema_id]   = s.[schema_id]\nJOIN    sys.indexes    i    ON    p.[object_id]   = i.[object_Id]\n                            AND   p.[index_Id]    = i.[index_Id]\nWHERE t.[name] = 'logdatapartition'\n\nSELECT o.name, pnp.index_id, pnp.partition_id, pnp.rows,   \n    pnp.data_compression_desc, pnp.pdw_node_id  \nFROM sys.pdw_nodes_partitions AS pnp  \nJOIN sys.pdw_nodes_tables AS NTables  \n    ON pnp.object_id = NTables.object_id  \nAND pnp.pdw_node_id = NTables.pdw_node_id  \nJOIN sys.pdw_table_mappings AS TMap  \n    ON NTables.name = TMap.physical_name \n    AND substring(TMap.physical_name,40, 10) = pnp.distribution_id \nJOIN sys.objects AS o  \n    ON TMap.object_id = o.object_id  \nWHERE o.name = 'logdatapartition'  \nORDER BY o.name, pnp.index_id, pnp.partition_id;  \n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

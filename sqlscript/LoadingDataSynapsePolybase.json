@@ -1,0 +1,17 @@
+{
+	"name": "LoadingDataSynapsePolybase",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE [logdataSynapsePolybase]\n(\n    [Id] [int],\n\t[Correlationid] [varchar](200),\n\t[Operationname] [varchar](200),\n\t[Status] [varchar](100),\n\t[Eventcategory] [varchar](100),\n\t[Level] [varchar](100),\n\t[Time] [datetime],\n\t[Subscription] [varchar](200),\n\t[Eventinitiatedby] [varchar](1000),\n\t[Resourcetype] [varchar](1000),\n\t[Resourcegroup] [varchar](1000)\n)\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

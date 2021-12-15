@@ -1,0 +1,16 @@
+{
+	"name": "sqldb",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=bayareala8s.database.windows.net;initial catalog=adventureworks;user id=sqladminusr",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIlNZTkFQU0VANDE4MEQ1REQtQjNDOC00NzgxLUE0QzctMEU3QzUzMjNGMjM4XzBhYTc2ZmM0LWE4MmUtNGRjOC1iYjM4LTBlZjQ3YjY2ZmE5MyINCn0="
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

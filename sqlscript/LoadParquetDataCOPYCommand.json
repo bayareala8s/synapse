@@ -1,0 +1,17 @@
+{
+	"name": "LoadParquetDataCOPYCommand",
+	"properties": {
+		"content": {
+			"query": "-- Lab - Loading data into a table - COPY Command - Parquet\n\nDROP TABLE [logdata]\n\n-- Recreate the table\n-- Here again I am using the data type with MAX because that is how I generated the parquet files when it came to the data type\n-- Here we need to specify the clustered index based on a column , because indexes can't be created on varchar(MAX)\n\nCREATE TABLE [logdataparquet]\n(\n        [Id] [int],\n\t[Correlationid] [varchar](200),\n\t[Operationname] [varchar](200),\n\t[Status] [varchar](100),\n\t[Eventcategory] [varchar](100),\n\t[Level] [varchar](100),\n\t[Time] [datetime],\n\t[Subscription] [varchar](200),\n\t[Eventinitiatedby] [varchar](1000),\n\t[Resourcetype] [varchar](1000),\n\t[Resourcegroup] [varchar](1000)\n)\n\n-- Grant the permissions again. Because when you drop the table, you also drop the associated permission\n\nGRANT INSERT ON logdataparquet TO user_load;\nGRANT SELECT ON logdataparquet TO user_load;\n\nCOPY INTO [logdataparquet] FROM 'https://bayareala8s.blob.core.windows.net/bayareala8s/raw/parquet/*.parquet'\nWITH\n(\nFILE_TYPE='PARQUET',\nCREDENTIAL=(IDENTITY= 'Shared Access Signature', SECRET='?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupx&se=2023-01-01T07:28:14Z&st=2021-11-30T23:28:14Z&spr=https&sig=nle18Kb7Wk%2BAHyRMEzMnvyYdnQlCXa7AA8TRrEA74BI%3D')\n)\n\nSELECT * FROM [logdataparquet]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "newpool",
+				"poolName": "newpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
