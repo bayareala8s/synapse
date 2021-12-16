@@ -1,0 +1,22 @@
+{
+	"name": "DestinationDataset_cye",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "bayareala8s-synapse-wksp-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "raw",
+				"fileSystem": "bayareala8s"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
