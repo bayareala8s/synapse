@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach_1lr",
+				"name": "Copy",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
